@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sports Live</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+    }
+    header {
+      background: #1e293b;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 850px;
+      margin: 25px auto;
+      padding: 16px;
+    }
+    .player {
+      background: #263449;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .events {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,
+        minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .event {
+      background: #1e293b;
+      padding: 18px;
+      border-radius: 10px;
+    }
+    a { color: #f87171; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏆 SPORTS LIVE</h1>
+    <p>Boxing • Basketball • Live Events</p>
+  </header>
+
+  <main>
+    <h2>Featured Live Event</h2>
+
+    <div class="player">
+      <div>
+        <h3>📺 Authorized Live Stream</h3>
+        <p>Official video player will appear here.</p>
+      </div>
+    </div>
+
+    <div class="events">
+      <div class="event">
+        <h3>🥊 Boxing</h3>
+        <p>Boxing schedules and authorized streams.</p>
+      </div>
+      <div class="event">
+        <h3>🏀 NBA</h3>
+        <p>Basketball schedules and authorized streams.</p>
+      </div>
+    </div>
+
+    <p>
+      <a href="https://www.nba.com/watch"
+         target="_blank" rel="noopener">
+        Visit official NBA viewing options
+      </a>
+    </p>
+  </main>
+
+  <footer>
+    Sports Live • Watch through authorized providers
+  </footer>
+</body>
+</html>
