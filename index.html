@@ -1,182 +1,93 @@
-
 <!DOCTYPE html>
-<html lang="tl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SPORTZONE | Live Sports</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#090e14;color:#f4f7fb;font-family:Arial,sans-serif}
-header{padding:18px 5%;background:#111923;border-bottom:1px solid #293747}
-.logo{font-size:24px;font-weight:900}
-.logo span{color:#35e69b}
-main{max-width:1100px;margin:28px auto;padding:0 16px}
-h1{font-size:32px}
-p,.muted{color:#9eafbf;line-height:1.6}
-.channels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}
-.channel{background:#151f2b;border:1px solid #304052;border-radius:12px;padding:16px;color:white;text-align:left;cursor:pointer}
-.channel.active,.channel:hover{border-color:#35e69b;background:#1b302c}
-.channel strong{display:block;margin-bottom:8px}
-.channel small{color:#a8b7c5}
-.player{background:#111923;border:1px solid #293747;border-radius:14px;overflow:hidden}
-.player-head{padding:16px}
-.frame{position:relative;width:100%;aspect-ratio:16/9;background:#000}
-.frame iframe{width:100%;height:100%;border:0;position:absolute;inset:0}
-.placeholder{height:100%;display:grid;place-content:center;text-align:center;padding:20px;color:#aab7c5}
-.notice{font-size:13px;margin-top:16px}
-.external{display:inline-block;color:#35e69b;margin-top:12px}
-footer{padding:30px;text-align:center;color:#8192a4;font-size:12px}
-@media(max-width:600px){
- .channels{grid-template-columns:1fr}
- h1{font-size:27px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sports Live</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+    }
+    header {
+      background: #1e293b;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 850px;
+      margin: 25px auto;
+      padding: 16px;
+    }
+    .player {
+      background: #263449;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .events {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,
+        minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .event {
+      background: #1e293b;
+      padding: 18px;
+      border-radius: 10px;
+    }
+    a { color: #f87171; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #cbd5e1;
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="logo">SPORT<span>ZONE</span></div>
-  <div class="muted">Your sports video directory</div>
-</header>
+  <header>
+    <h1>🏆 SPORTS LIVE</h1>
+    <p>Boxing • Basketball • Live Events</p>
+  </header>
 
-<main>
-  <h1>Sports Live Channels</h1>
-  <p>Pumili ng channel para mapanood ang authorized sports videos at broadcasts.</p>
+  <main>
+    <h2>Featured Live Event</h2>
 
-  <div class="channels" id="channels"></div>
-
-  <section class="player">
-    <div class="player-head">
-      <strong id="title">Pumili ng channel</strong>
-      <div class="muted" id="description">Piliin ang isa sa mga channel sa itaas.</div>
-    </div>
-    <div class="frame" id="frame">
-      <div class="placeholder">
-        <div>
-          <div style="font-size:40px">▶</div>
-          <p>Ang video player ay lalabas dito.</p>
-        </div>
+    <div class="player">
+      <div>
+        <h3>📺 Authorized Live Stream</h3>
+        <p>Official video player will appear here.</p>
       </div>
     </div>
-  </section>
 
-  <p class="notice">
-    Ang mga channel sa simula ay placeholders. Maglagay lamang ng official
-    embed URL mula sa provider na nagpapahintulot ng embedding.
-    Hindi kasama ang unauthorized sports broadcasts.
-  </p>
-  <a class="external" id="external" href="#" target="_blank"
-     rel="noopener noreferrer" hidden>Buksan sa official website ↗</a>
-</main>
+    <div class="events">
+      <div class="event">
+        <h3>🥊 Boxing</h3>
+        <p>Boxing schedules and authorized streams.</p>
+      </div>
+      <div class="event">
+        <h3>🏀 NBA</h3>
+        <p>Basketball schedules and authorized streams.</p>
+      </div>
+    </div>
 
-<footer>SPORTZONE · Independent sports directory</footer>
+    <p>
+      <a href="https://www.nba.com/watch"
+         target="_blank" rel="noopener">
+        Visit official NBA viewing options
+      </a>
+    </p>
+  </main>
 
-<script>
-const channels = [
-  {
-    name: "Boxing Channel",
-    sport: "🥊Boxing",
-    embed: "https://zlive.st/embed/auto-dazn-1-usa",
-    official: ""
-  },
-  {
-    name: "Basketball Channel",
-    sport: "🏀 Basketball",
-    embed: "",
-    official: ""
-  },
-  {
-    name: "Sports Highlights",
-    sport: "🏆 Highlights",
-    embed: "",
-    official: ""
-  }
-];
-
-const list = document.getElementById("channels");
-const frame = document.getElementById("frame");
-const title = document.getElementById("title");
-const description = document.getElementById("description");
-const external = document.getElementById("external");
-
-function validHttpUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
-}
-
-function renderChannels() {
-  list.innerHTML = "";
-
-  channels.forEach((channel, index) => {
-    const button = document.createElement("button");
-    button.className = "channel";
-    button.innerHTML =
-      `<strong>${channel.sport}</strong><small>${channel.name}</small>`;
-
-    button.addEventListener("click", () => selectChannel(index, button));
-    list.appendChild(button);
-  });
-}
-
-function selectChannel(index, button) {
-  const channel = channels[index];
-
-  document.querySelectorAll(".channel").forEach(item =>
-    item.classList.remove("active")
-  );
-  button.classList.add("active");
-
-  title.textContent = channel.name;
-  description.textContent = channel.sport;
-
-  frame.replaceChildren();
-  external.hidden = true;
-
-  if (channel.embed && validHttpUrl(channel.embed)) {
-    const url = new URL(channel.embed);
-
-    // Only allow known official embed hosts.
-    const allowedHosts = [
-      "www.youtube.com",
-      "www.youtube-nocookie.com",
-      "player.vimeo.com"
-    ];
-
-    if (!allowedHosts.includes(url.hostname)) {
-      showPlaceholder("Hindi suportadong embed host. Gamitin ang official provider.");
-      return;
-    }
-
-    const iframe = document.createElement("iframe");
-    iframe.src = url.href;
-    iframe.title = channel.name;
-    iframe.allow = "encrypted-media; picture-in-picture; fullscreen";
-    iframe.allowFullscreen = true;
-    iframe.referrerPolicy = "strict-origin-when-cross-origin";
-    frame.appendChild(iframe);
-    description.textContent = "Official embedded video. Availability depends on the provider.";
-  } else {
-    showPlaceholder("Wala pang nakakabit na stream para sa channel na ito.");
-
-    if (channel.official && validHttpUrl(channel.official)) {
-      external.href = channel.official;
-      external.hidden = false;
-    }
-  }
-}
-
-function showPlaceholder(message) {
-  const box = document.createElement("div");
-  box.className = "placeholder";
-  box.textContent = message;
-  frame.replaceChildren(box);
-}
-
-renderChannels();
-</script>
+  <footer>
+    Sports Live • Watch through authorized providers
+  </footer>
 </body>
 </html>
