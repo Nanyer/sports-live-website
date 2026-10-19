@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,87 +8,65 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #101827;
+      background: #10131b;
       color: white;
+      font-family: Arial, sans-serif;
     }
     header {
-      background: #1e293b;
+      background: #202838;
       padding: 20px;
       text-align: center;
     }
     main {
-      max-width: 850px;
-      margin: 25px auto;
-      padding: 16px;
-    }
-    .player {
-      background: #263449;
-      aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      border-radius: 12px;
-      padding: 10px;
-    }
-    .events {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,
-        minmax(140px, 1fr));
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .event {
-      background: #1e293b;
-      padding: 18px;
-      border-radius: 10px;
-    }
-    a { color: #f87171; }
-    footer {
-      text-align: center;
+      max-width: 900px;
+      margin: auto;
       padding: 20px;
-      color: #cbd5e1;
     }
+    button {
+      padding: 12px 18px;
+      margin: 5px;
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    video {
+      width: 100%;
+      background: black;
+      aspect-ratio: 16 / 9;
+    }
+    .note { color: #bdc6d5; }
   </style>
 </head>
 <body>
   <header>
-    <h1>🏆 SPORTS LIVE</h1>
-    <p>Boxing • Basketball • Live Events</p>
+    <h1>🏆 Sports Live</h1>
+    <p>Watch authorized live sports</p>
   </header>
 
   <main>
-    <h2>Featured Live Event</h2>
+    <h2>Select a sport</h2>
+    <button onclick="showInfo('NBA')">🏀 NBA</button>
+    <button onclick="showInfo('Boxing')">🥊 Boxing</button>
+    <button onclick="showInfo('Other Sports')">⚽ Other Sports</button>
 
-    <div class="player">
-      <div>
-        <h3>📺 Authorized Live Stream</h3>
-        <p>https://zlive.st/embed/auto-dazn-1-usa</p>
-      </div>
-    </div>
+    <h2 id="event">Choose a sports event</h2>
 
-    <div class="events">
-      <div class="event">
-        <h3>🥊 Boxing</h3>
-        <p>https://zlive.st/embed/auto-dazn-1-usa</p>
-      </div>
-      <div class="event">
-        <h3>🏀 NBA</h3>
-        <p>Basketball schedules and authorized streams.</p>
-      </div>
-    </div>
+    <video controls playsinline>
+      Your browser does not support video playback.
+    </video>
 
-    <p>
-      <a href="https://www.nba.com/watch"
-         target="_blank" rel="noopener">
-        Visit official NBA viewing options
-      </a>
+    <p class="note" id="status">
+      The live stream will appear here when configured.
     </p>
   </main>
 
-  <footer>
-    Sports Live • Watch through authorized providers
-  </footer>
+  <script>
+    function showInfo(sport) {
+      document.getElementById("event").textContent = sport;
+      document.getElementById("status").textContent =
+        "The " + sport +
+        " player needs an authorized stream URL or official embed.";
+    }
+  </script>
 </body>
 </html>
