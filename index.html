@@ -1,93 +1,475 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sports Live</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d12">
+  <title>SPORTZONE | Live Sports</title>
   <style>
+    :root {
+      --bg: #090d12;
+      --panel: #111923;
+      --panel2: #18232f;
+      --text: #f4f7fb;
+      --muted: #98a7b7;
+      --green: #38e59a;
+      --border: #263442;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: #101827;
-      color: white;
-      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
     }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
     header {
-      background: #1e293b;
-      padding: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(9,13,18,.96);
+      border-bottom: 1px solid var(--border);
+      padding: 17px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span { color: var(--green); }
+
+    nav { display: flex; gap: 20px; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    nav a:hover { color: var(--green); }
+
+    .live-label {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    main {
+      width: min(1200px, 92%);
+      margin: 30px auto;
+    }
+
+    .hero {
+      padding: 35px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        radial-gradient(ellipse at 85% 20%, #174b3a 0, transparent 38%),
+        linear-gradient(120deg, #17232d, #0d131b);
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h1 { font-size: clamp(30px, 5vw, 48px); margin: 12px 0; }
+    .hero p { color: var(--muted); line-height: 1.7; max-width: 560px; }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      max-width: 550px;
+    }
+
+    input {
+      min-width: 0;
+      flex: 1;
+      background: #080d12;
+      color: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 13px;
+      outline: none;
+    }
+
+    input:focus { border-color: var(--green); }
+
+    .btn {
+      border: 0;
+      background: var(--green);
+      color: #06130d;
+      padding: 12px 17px;
+      border-radius: 9px;
+      font-weight: bold;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 28px 0 16px;
+    }
+
+    h2 { font-size: 21px; margin: 0; }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .filters { display: flex; flex-wrap: wrap; gap: 9px; }
+
+    .filter {
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 9px 15px;
+    }
+
+    .filter.active, .filter:hover {
+      background: var(--green);
+      color: #06130d;
+      border-color: var(--green);
+    }
+
+    .matches {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .match {
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .match:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+    }
+
+    .match-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .teams {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       text-align: center;
     }
-    main {
-      max-width: 900px;
-      margin: 25px auto;
-      padding: 16px;
+
+    .team { flex: 1; font-weight: bold; font-size: 14px; }
+    .team-icon { font-size: 30px; display: block; margin-bottom: 8px; }
+    .vs { color: var(--muted); font-size: 12px; }
+    .match-bottom { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .status { color: var(--green); font-size: 11px; font-weight: bold; }
+
+    .player-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(230px, .8fr);
+      gap: 18px;
+      margin-top: 18px;
     }
-    .player {
-      background: #263449;
-      border-radius: 12px;
+
+    .player-card, .side-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
       overflow: hidden;
+    }
+
+    .video-wrap {
+      background: #000;
       aspect-ratio: 16 / 9;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    video { width: 100%; height: 100%; display: block; background: #000; }
+
+    .player-info { padding: 18px; }
+    .player-info h3 { margin: 0 0 8px; }
+    .side-card { padding: 20px; }
+    .side-card p { color: var(--muted); line-height: 1.7; font-size: 14px; }
+
+    .source-input { width: 100%; margin: 8px 0 10px; }
+    .notice {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .empty {
+      display: none;
+      padding: 24px;
+      color: var(--muted);
       text-align: center;
+      background: var(--panel);
+      border-radius: 12px;
     }
-    .player iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-    .events {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,
-        minmax(180px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .event {
-      background: #1e293b;
-      padding: 18px;
-      border-radius: 10px;
-    }
-    a {
-      color: #fca5a5;
-    }
+
     footer {
       text-align: center;
-      padding: 20px;
-      color: #cbd5e1;
+      padding: 30px 5%;
+      margin-top: 45px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 760px) {
+      header { padding: 15px 4%; }
+      nav { gap: 12px; }
+      nav a { font-size: 12px; }
+      .logo { font-size: 18px; }
+      main { width: 92%; margin-top: 20px; }
+      .hero { padding: 24px 19px; }
+      .matches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .player-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 440px) {
+      nav a:nth-child(2) { display: none; }
+      .matches { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>🏆 SPORTS LIVE</h1>
-    <p>Boxing • NBA • Live Events</p>
+    <div class="logo">SPORT<span>ZONE</span></div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#matches">Matches</a>
+      <a href="#watch">Watch</a>
+    </nav>
+    <div class="live-label">● SPORTS HUB</div>
   </header>
 
   <main>
-    <h2>🥊 Boxing Live</h2>
-
-    <div class="player">
-      <<iframe src="https://ehgembxe.cfd/d2kvfw31-339" width="100%" height="100%" frameborder="0" scrolling="no" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
-
-    <div class="events">
-      <div class="event">
-        <h3>🥊 Boxing</h3>
-        <p>Watch authorized boxing streams.</p>
+    <section class="hero" id="home">
+      <div class="eyebrow">YOUR SPORTS DESTINATION</div>
+      <h1>Every Match.<br>One Destination.</h1>
+      <p>Discover sports, browse match listings, and watch authorized video streams in one place.</p>
+      <div class="search-row">
+        <input id="search" type="search" placeholder="Search teams or sports..." aria-label="Search matches">
+        <button class="btn" id="searchBtn">Search</button>
       </div>
-      <div class="event">
-        <h3>🏀 NBA</h3>
-        <p>View official basketball options.</p>
-        <a href="https://www.nba.com/watch"
-           target="_blank" rel="noopener">
-          NBA Watch
-        </a>
+    </section>
+
+    <section id="matches">
+      <div class="section-head">
+        <h2>Explore Sports</h2>
+        <span class="muted">Demo listings</span>
       </div>
-    </div>
+
+      <div class="filters" id="filters">
+        <button class="filter active" data-sport="All">All Sports</button>
+        <button class="filter" data-sport="Football">⚽ Football</button>
+        <button class="filter" data-sport="Basketball">🏀 Basketball</button>
+        <button class="filter" data-sport="Tennis">🎾 Tennis</button>
+      </div>
+
+      <div class="section-head">
+        <h2>Featured Matches</h2>
+        <span class="muted">Sample data</span>
+      </div>
+
+      <div class="matches" id="matchesGrid"></div>
+      <div class="empty" id="empty">No matches found. Try another search.</div>
+    </section>
+
+    <section id="watch">
+      <div class="section-head">
+        <h2>Video Player</h2>
+        <span class="live-label">DEMO PLAYER</span>
+      </div>
+
+      <div class="player-layout">
+        <div class="player-card">
+          <div class="video-wrap">
+            <video id="video" controls playsinline preload="metadata"
+              poster="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80">
+              <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
+              Your browser does not support HTML video.
+            </video>
+          </div>
+          <div class="player-info">
+            <h3 id="playerTitle">Welcome to SPORTZONE</h3>
+            <div class="muted" id="playerDescription">Demo video — not a live sports broadcast.</div>
+          </div>
+        </div>
+
+        <aside class="side-card">
+          <h3>Use Your Authorized Stream</h3>
+          <p>Have a direct video URL that you own or are authorized to use? Paste it below to load it into the player.</p>
+          <label for="streamUrl" class="muted">Direct MP4 video URL</label>
+          <input class="source-input" id="streamUrl" type="url" placeholder="https://example.com/video.mp4">
+          <button class="btn" id="loadStream" style="width:100%">Load Video</button>
+          <p class="notice">This basic player supports compatible direct video URLs, such as MP4. Some streams require a dedicated player, correct server settings, or provider authorization. Do not use unauthorized broadcasts.</p>
+          <button id="resetVideo" class="filter" style="width:100%;margin-top:8px">Reset Demo Video</button>
+        </aside>
+      </div>
+    </section>
   </main>
 
   <footer>
-    Sports Live | Authorized streams only
+    SPORTZONE © <span id="year"></span> · Independent demo website · No official live sports feeds included.
   </footer>
+
+  <script>
+    const demoVideo =
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4";
+
+    const matches = [
+      { sport: "Football", home: "Blue United", away: "Red City", a: "🔵", b: "🔴", time: "Sample fixture", status: "SCHEDULED" },
+      { sport: "Basketball", home: "Metro Hoops", away: "Coastal Stars", a: "🏀", b: "⭐", time: "Sample fixture", status: "SCHEDULED" },
+      { sport: "Tennis", home: "Player A", away: "Player B", a: "🎾", b: "🎾", time: "Sample fixture", status: "FEATURED" },
+      { sport: "Football", home: "Northside FC", away: "Southside FC", a: "⚽", b: "⚽", time: "Sample fixture", status: "SCHEDULED" },
+      { sport: "Basketball", home: "City Eagles", away: "Lake Wolves", a: "🦅", b: "🐺", time: "Sample fixture", status: "SCHEDULED" },
+      { sport: "Tennis", home: "Player C", away: "Player D", a: "🎾", b: "🎾", time: "Sample fixture", status: "FEATURED" }
+    ];
+
+    let selectedSport = "All";
+
+    const grid = document.getElementById("matchesGrid");
+    const search = document.getElementById("search");
+    const empty = document.getElementById("empty");
+
+    function renderMatches() {
+      const term = search.value.trim().toLowerCase();
+
+      const filtered = matches.filter(match => {
+        const sportMatches = selectedSport === "All" ||
+          match.sport === selectedSport;
+        const text = `${match.sport} ${match.home} ${match.away}`.toLowerCase();
+        return sportMatches && text.includes(term);
+      });
+
+      grid.innerHTML = filtered.map(match => `
+        <article class="match" tabindex="0" role="button"
+          aria-label="Select ${match.home} versus ${match.away}"
+          data-title="${match.home} vs ${match.away}"
+          data-sport="${match.sport}">
+          <div class="match-top">
+            <span>${match.sport.toUpperCase()}</span>
+            <span>${match.status}</span>
+          </div>
+          <div class="teams">
+            <div class="team">
+              <span class="team-icon">${match.a}</span>${match.home}
+            </div>
+            <span class="vs">VS</span>
+            <div class="team">
+              <span class="team-icon">${match.b}</span>${match.away}
+            </div>
+          </div>
+          <div class="match-bottom">
+            <span class="muted">${match.time}</span>
+            <span class="status">VIEW DETAILS ↗</span>
+          </div>
+        </article>
+      `).join("");
+
+      empty.style.display = filtered.length ? "none" : "block";
+
+      grid.querySelectorAll(".match").forEach(card => {
+        function selectMatch() {
+          document.getElementById("playerTitle").textContent =
+            card.dataset.title;
+          document.getElementById("playerDescription").textContent =
+            card.dataset.sport +
+            " · Sample fixture. Connect an authorized stream to watch.";
+          document.getElementById("watch").scrollIntoView({
+            behavior: "smooth"
+          });
+        }
+
+        card.addEventListener("click", selectMatch);
+        card.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            selectMatch();
+          }
+        });
+      });
+    }
+
+    document.getElementById("filters").addEventListener("click", event => {
+      const button = event.target.closest("button[data-sport]");
+      if (!button) return;
+
+      selectedSport = button.dataset.sport;
+
+      document.querySelectorAll(".filter[data-sport]").forEach(item => {
+        item.classList.toggle("active", item === button);
+      });
+
+      renderMatches();
+    });
+
+    document.getElementById("searchBtn").addEventListener("click", renderMatches);
+    search.addEventListener("input", renderMatches);
+
+    document.getElementById("loadStream").addEventListener("click", () => {
+      const url = document.getElementById("streamUrl").value.trim();
+      const video = document.getElementById("video");
+
+      try {
+        const parsed = new URL(url);
+        if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+          throw new Error("Invalid protocol");
+        }
+        video.pause();
+        video.src = parsed.href;
+        video.load();
+        document.getElementById("playerTitle").textContent = "Custom Video";
+        document.getElementById("playerDescription").textContent =
+          "Authorized video source · Press play to start.";
+        video.play().catch(() => {});
+      } catch {
+        alert("Please enter a valid HTTP or HTTPS video URL.");
+      }
+    });
+
+    document.getElementById("resetVideo").addEventListener("click", () => {
+      const video = document.getElementById("video");
+      video.pause();
+      video.src = demoVideo;
+      video.load();
+      document.getElementById("streamUrl").value = "";
+      document.getElementById("playerTitle").textContent = "Welcome to SPORTZONE";
+      document.getElementById("playerDescription").textContent =
+        "Demo video — not a live sports broadcast.";
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    renderMatches();
+  </script>
 </body>
 </html>
